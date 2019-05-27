@@ -3,16 +3,12 @@
   "version": "0.14.0",
   "description": "Public Slack organizations made easy",
   "repository": "rauchg/slackin",
-  "main": "dist/index",
+  "main": "lib/index",
   "files": [
-    "dist",
+    "lib",
     "bin"
   ],
   "dependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/register": "^7.0.0",
     "args": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -40,25 +36,9 @@
     "slackin": "./bin/slackin"
   },
   "scripts": {
-    "copy-assets": "cpy lib/assets/* dist/assets",
-    "build-js": "babel lib/*.js -d dist/",
     "test": "mocha && eslint lib/**",
     "postinstall": "npm run build",
-    "clean": "rimraf dist",
     "build": "npm run build-js && npm run copy-assets",
     "start": "chmod +x bin/slackin && ./bin/slackin"
-  },
-  "now": {
-    "type": "npm",
-    "files": [
-      "bin",
-      "lib"
-    ],
-    "env": [
-      "SLACK_API_TOKEN",
-      "SLACK_SUBDOMAIN",
-      "GOOGLE_CAPTCHA_SECRET",
-      "GOOGLE_CAPTCHA_SITEKEY"
-    ]
   }
 }
