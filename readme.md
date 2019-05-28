@@ -3,7 +3,7 @@
 ## Features
 
 - A landing page you can point users to fill in their emails and receive an invite (`https://slack.yourdomain.com`)
-- An `<iframe>` badge to embed on any website that shows connected users in *realtime* with socket.io.
+- An `<iframe>` badge to embed on any website that shows connected users in *realtime* with Server-Sent events.
 - A SVG badge that works well from static mediums (like GitHub README pages)
 - Abuse prevention via [Google reCAPTCHA](https://www.google.com/recaptcha/intro/)
 
