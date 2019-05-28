@@ -1,3 +1,12 @@
+0.15.0 / 2019-05-28
+===================
+
+  * Increase default interval to 5 minutes.
+  * Replace socket.io with Server-sent Events.
+  * Use the official Slack SDK.
+  * Remove Babel.
+  * Make ReCaptcha optional.
+  * Require Node.js 8.
 
 0.13.0 / 2016-07-20
 ===================
