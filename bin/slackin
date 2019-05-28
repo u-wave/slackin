@@ -1,55 +1,72 @@
 #!/usr/bin/env node
 
-var pkg = require('./../package')
-var args = require('args')
-var slackin = require('./../lib')
+const pkg = require("./../package");
+const args = require("args");
+const ms = require("ms");
+const slackin = require("./../lib");
 
 args
-  .option(['p', 'port'], 'Port to listen on [$PORT or 3000]', require('hostenv').PORT || process.env.PORT || 3000)
-  .option(['h', 'hostname'], 'Hostname to listen on [$HOSTNAME or 0.0.0.0]', require('hostenv').HOSTNAME || process.env.WEBSITE_HOSTNAME || '0.0.0.0')
-  .option(['c', 'channels'], 'One or more comma-separated channel names to allow single-channel guests [$SLACK_CHANNELS]', process.env.SLACK_CHANNELS)
-  .option(['i', 'interval'], 'How frequently (ms) to poll Slack [$SLACK_INTERVAL or 5000]', process.env.SLACK_INTERVAL || 5000)
-  .option(['P', 'path'], 'Path to serve slackin under', '/')
-  .option(['s', 'silent'], 'Do not print out warns or errors')
-  .option(['x', 'cors'], 'Enable CORS for all routes')
-  .option(['C', 'coc'], 'Full URL to a CoC that needs to be agreed to')
-  .option(['S', 'css'], 'Full URL to a custom CSS file to use on the main page')
-  .option(['?', 'help'], 'Show the usage information')
+  .option(
+    ["p", "port"],
+    "Port to listen on [$PORT or 3000]",
+    require("hostenv").PORT || process.env.PORT || 3000
+  )
+  .option(
+    ["h", "hostname"],
+    "Hostname to listen on [$HOSTNAME or 0.0.0.0]",
+    require("hostenv").HOSTNAME || process.env.WEBSITE_HOSTNAME || "0.0.0.0"
+  )
+  .option(
+    ["c", "channels"],
+    "One or more comma-separated channel names to allow single-channel guests [$SLACK_CHANNELS]",
+    process.env.SLACK_CHANNELS
+  )
+  .option(
+    ["i", "interval"],
+    "How frequently (ms) to poll Slack [$SLACK_INTERVAL or 300_000]",
+    process.env.SLACK_INTERVAL || ms("5 minutes")
+  )
+  .option(["P", "path"], "Path to serve slackin under", "/")
+  .option(["s", "silent"], "Do not print out warns or errors")
+  .option(["x", "cors"], "Enable CORS for all routes")
+  .option(["C", "coc"], "Full URL to a CoC that needs to be agreed to")
+  .option(["S", "css"], "Full URL to a custom CSS file to use on the main page")
+  .option(["?", "help"], "Show the usage information");
 
-var flags = args.parse(process.argv, {
-  value: '<team-id> <api-token> <google-captcha-secret> <google-captcha-sitekey>',
+const flags = args.parse(process.argv, {
+  value:
+    "<team-id> <api-token> <google-captcha-secret> <google-captcha-sitekey>",
   help: false
-})
+});
 
-var org = args.sub[0] || process.env.SLACK_SUBDOMAIN
-var token = args.sub[1] || process.env.SLACK_API_TOKEN
-var emails = process.env.EMAIL_SLACK_LIST || ''
+const org = args.sub[0] || process.env.SLACK_SUBDOMAIN;
+const token = args.sub[1] || process.env.SLACK_API_TOKEN;
+const emails = process.env.EMAIL_SLACK_LIST || "";
 
-var gcaptcha_secret = args.sub[2] || process.env.GOOGLE_CAPTCHA_SECRET
-var gcaptcha_sitekey = args.sub[3] || process.env.GOOGLE_CAPTCHA_SITEKEY
-
-
+const gcaptcha_secret = args.sub[2] || process.env.GOOGLE_CAPTCHA_SECRET;
+const gcaptcha_sitekey = args.sub[3] || process.env.GOOGLE_CAPTCHA_SITEKEY;
 
 if (flags.help) {
-  args.showHelp()
+  args.showHelp();
 }
 
 if (!org || !token || !gcaptcha_sitekey || !gcaptcha_secret) {
-  args.config.exit.help = false
-  args.showHelp()
-  process.exit(1)
+  args.config.exit.help = false;
+  args.showHelp();
+  process.exit(1);
 } else {
-  flags.org = org
-  flags.token = token
-  flags.emails = emails
-  flags.gcaptcha_secret = gcaptcha_secret
-  flags.gcaptcha_sitekey = gcaptcha_sitekey
+  flags.org = org;
+  flags.token = token;
+  flags.emails = emails;
+  flags.gcaptcha_secret = gcaptcha_secret;
+  flags.gcaptcha_sitekey = gcaptcha_sitekey;
 }
 
-var port = flags.port
-var hostname = flags.hostname
+const port = flags.port;
+const hostname = flags.hostname;
 
-slackin(flags).listen(port, hostname, function (err) {
-  if (err) throw err
-  if (!flags.silent) console.log('%s – listening on %s:%d', new Date, hostname, port)
-})
+slackin(flags).listen(port, hostname, function(err) {
+  if (err) throw err;
+  if (!flags.silent)
+    console.log("%s – listening on %s:%d", new Date(), hostname, port);
+});
