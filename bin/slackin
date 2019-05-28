@@ -35,7 +35,9 @@ if (flags.help) {
 }
 
 if (!org || !token || !gcaptcha_sitekey || !gcaptcha_secret) {
+  args.config.exit.help = false
   args.showHelp()
+  process.exit(1)
 } else {
   flags.org = org
   flags.token = token
