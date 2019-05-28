@@ -1,28 +1,26 @@
-import nock from 'nock';
-import request from 'supertest';
-import slackin from '../lib/index';
+const nock = require('nock');
+const request = require('supertest');
+const slackin = require('../lib/index');
 
 describe('slackin', () => {
   describe('POST /invite', () => {
     beforeEach(() => {
-      nock('https://myorg.slack.com')
-        .get('/api/users.list')
-        .query({token: 'mytoken', presence: '1'})
-        .query({token: 'mytoken'})
+      nock('https://slack.com')
+        .post('/api/users.list', 'token=mytoken&presence=1')
         .reply(200, {
           ok: true,
           members: [{}]
         });
 
-      nock('https://myorg.slack.com')
-        .get('/api/channels.list?token=mytoken')
+      nock('https://slack.com')
+        .post('/api/channels.list', 'token=mytoken')
         .reply(200, {
           ok: true,
           channels: [{}]
         });
 
-      nock('https://myorg.slack.com')
-        .get('/api/team.info?token=mytoken')
+      nock('https://slack.com')
+        .post('/api/team.info', 'token=mytoken')
         .reply(200, {
           ok: true,
           team: {icon: {}}
@@ -79,24 +77,22 @@ describe('slackin', () => {
     beforeEach(() => {
       process.env.LETSENCRYPT_CHALLENGE = 'letsencrypt-challenge';
 
-      nock('https://myorg.slack.com')
-        .get('/api/users.list')
-        .query({token: 'mytoken', presence: '1'})
-        .query({token: 'mytoken'})
+      nock('https://slack.com')
+        .post('/api/users.list', 'token=mytoken&presence=1')
         .reply(200, {
           ok: true,
           members: [{}]
         });
 
-      nock('https://myorg.slack.com')
-        .get('/api/channels.list?token=mytoken')
+      nock('https://slack.com')
+        .post('/api/channels.list', 'token=mytoken')
         .reply(200, {
           ok: true,
           channels: [{}]
         });
 
-      nock('https://myorg.slack.com')
-        .get('/api/team.info?token=mytoken')
+      nock('https://slack.com')
+        .post('/api/team.info', 'token=mytoken')
         .reply(200, {
           ok: true,
           team: {icon: {}}
