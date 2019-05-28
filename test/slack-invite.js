@@ -15,18 +15,15 @@ describe('slack-invite', () => {
       };
     });
 
-    it("succeeds when ok", (done) => {
+    it("succeeds when ok", async () => {
       nock(`https://${opts.org}.slack.com`).
         post('/api/users.admin.invite').
         reply(200, { ok: true });
 
-      invite(opts, (err) => {
-        assert.equal(err, null);
-        done();
-      });
+      await invite(opts);
     });
 
-    it("passes along an error message", (done) => {
+    it("passes along an error message", async () => {
       nock(`https://${opts.org}.slack.com`).
         post('/api/users.admin.invite').
         reply(200, {
@@ -34,11 +31,7 @@ describe('slack-invite', () => {
           error: "other error"
         });
 
-      invite(opts, (err) => {
-        assert.notEqual(err, null);
-        assert.equal(err.message, "other error");
-        done();
-      });
+      await assert.rejects(() => invite(opts), { message: "other error" });
     });
   });
 });
