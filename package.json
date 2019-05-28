@@ -40,8 +40,6 @@
   },
   "scripts": {
     "test": "mocha && eslint lib/**",
-    "postinstall": "npm run build",
-    "build": "npm run build-js && npm run copy-assets",
     "start": "chmod +x bin/slackin && ./bin/slackin"
   }
 }
